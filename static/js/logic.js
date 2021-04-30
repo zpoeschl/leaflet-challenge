@@ -22,8 +22,8 @@ function createFeatures(earthquakeData) {
     var earthquakes = L.geoJSON(earthquakeData, {
         pointToLayer: function(feature, latlng) {
             return new L.CircleMarker(latlng, {
-                radius: 5,
-                color: "#FF0000"
+                radius: feature.geometry.coordinates[2],
+                color: "#000000"
             })
         },
         onEachFeature: onEachFeature
