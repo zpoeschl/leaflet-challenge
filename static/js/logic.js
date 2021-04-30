@@ -78,12 +78,12 @@ function createMap(earthquakes) {
 
     // set colors for legend
     function getColor(d) {
-        return d < 10 ? "#00FF00" : //lime green
-            d >= 10 ? "#9acd32" : //yellow green
-                d >= 30 ? "#FFFF00" : //yellow
-                    d >= 50 ? "f8d568" : //orange yellow
-                        d >= 70 ? "FFA500" : //orange
-                            d >= 90 ? "#FF0000" : //red
+        return d === "-10-10" ? "#00FF00" : //lime green
+            d === "10-30" ? "#9acd32" : //yellow green
+                d === "30-50" ? "#FFFF00" : //yellow
+                    d === "50-70" ? "f8d568" : //orange yellow
+                        d === "70-90" ? "FFA500" : //orange
+                            d === "90+" ? "#FF0000" : //red
                                 "DC143C"; //crimson
     }
 
