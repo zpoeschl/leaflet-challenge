@@ -20,7 +20,7 @@ function createFeatures(earthquakeData) {
 
     // set color range for markers
     function getColor(d) {
-        return  d <= 10 ? "#00FF00" : //lime green
+        return  d < 10 ? "#00FF00" : //lime green
                 d >= 10 ? "#9acd32" : //yellow green
                 d >= 30 ? "#FFFF00" : //yellow
                 d >= 50 ? "f8d568" : //orange yellow
@@ -35,8 +35,8 @@ function createFeatures(earthquakeData) {
         pointToLayer: function(feature, latlng) {
             return new L.circleMarker(latlng, {
                 radius: feature.properties.mag,
-                color: getColor(feature.geometry.coordinates[2]),
-                weight: 1,
+                color: "black",
+                weight: .5,
                 fill: true,
                 fillColor: getColor(feature.geometry.coordinates[2]),
                 fillOpacity: 1
@@ -77,3 +77,25 @@ function createMap(earthquakes) {
     });
 
 }
+
+// create legend
+var legend = L.control({position: "bottomright"});
+    legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create("div", "info legend"),
+        labels = ["<strong>Depth</strong>"],
+        categories = ["-10-10", "10-30", "30-50", "50-70", "70-90", "90+"];
+    
+    for (var i = 0; i < categories.length; i++) {
+        div.innerHTML +=
+        labels.push(
+            '<i style="background:' + getColor(categories[i] + 1) + '"></i> ' +
+            (categories[i] ? categories[i] : '+'));
+        }
+
+        div.innerHTML = labels.join('<br>');
+    return div;
+};
+
+// myMap.addLayer(legend);
+// legend.addTo(myMap);
