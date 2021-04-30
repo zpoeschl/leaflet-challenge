@@ -20,18 +20,18 @@ function createFeatures(earthquakeData) {
     // create geojson layer containing features array
     // run onEachFeature once for each piece of data in the array
     var earthquakes = L.geoJSON(earthquakeData, {
+        pointToLayer: function(feature, latlng) {
+            return new L.CircleMarker(latlng, {
+                radius: 5,
+                color: "#FF0000"
+            })
+        },
         onEachFeature: onEachFeature
     });
 
     // send earthquakes layer to createMap function
     createMap(earthquakes);
 }
-
-d3.json(queryUrl).then(function(response) {
-
-    var markers = L.circle();
-})
-
 
     // var depth = feature.geometry.coordinates[2];
 
