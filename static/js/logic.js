@@ -50,15 +50,9 @@ function createMap(earthquakes) {
 
     // create map + light map and earthquake layers to display on load
     var myMap = L.map("mapid", {
-        center: [
-            37.09, -95.71
-        ],
+        center: [37.09, -95.71],
         zoom: 5,
         layers: [lightmap, earthquakes]
     });
 
-    // create layer control
-    L.control.layers(baseMaps, overlayMaps, {
-        collapsed: false
-    }).addTo(myMap);
 }
