@@ -5,7 +5,7 @@ console.log("logic.js loaded");
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
 // perform GET request to queryUrl
-d3.json(queryUrl).then(function(data) {
+d3.json(queryUrl).then(function (data) {
     // send data.features object to createFeatures function
     createFeatures(data.features);
 });
@@ -20,19 +20,19 @@ function createFeatures(earthquakeData) {
 
     // set color range for markers
     function getColor(d) {
-        return  d < 10 ? "#00FF00" : //lime green
-                d >= 10 ? "#9acd32" : //yellow green
+        return d < 10 ? "#00FF00" : //lime green
+            d >= 10 ? "#9acd32" : //yellow green
                 d >= 30 ? "#FFFF00" : //yellow
-                d >= 50 ? "f8d568" : //orange yellow
-                d >= 70 ? "FFA500" : //orange
-                d >= 90 ? "#FF0000" : //red
-                            "DC143C"; //crimson
+                    d >= 50 ? "f8d568" : //orange yellow
+                        d >= 70 ? "FFA500" : //orange
+                            d >= 90 ? "#FF0000" : //red
+                                "DC143C"; //crimson
     }
 
     // create geojson layer containing features array
     // run onEachFeature once for each piece of data in the array
     var earthquakes = L.geoJSON(earthquakeData, {
-        pointToLayer: function(feature, latlng) {
+        pointToLayer: function (feature, latlng) {
             return new L.circleMarker(latlng, {
                 radius: feature.properties.mag,
                 color: "black",
@@ -76,26 +76,35 @@ function createMap(earthquakes) {
         layers: [lightmap, earthquakes]
     });
 
-}
+    // set colors for legend
+    function getColor(d) {
+        return d < 10 ? "#00FF00" : //lime green
+            d >= 10 ? "#9acd32" : //yellow green
+                d >= 30 ? "#FFFF00" : //yellow
+                    d >= 50 ? "f8d568" : //orange yellow
+                        d >= 70 ? "FFA500" : //orange
+                            d >= 90 ? "#FF0000" : //red
+                                "DC143C"; //crimson
+    }
 
-// create legend
-var legend = L.control({position: "bottomright"});
+    // create legend
+    var legend = L.control({ position: "bottomright" });
     legend.onAdd = function (map) {
 
-    var div = L.DomUtil.create("div", "info legend"),
-        labels = ["<strong>Depth</strong>"],
-        categories = ["-10-10", "10-30", "30-50", "50-70", "70-90", "90+"];
-    
-    for (var i = 0; i < categories.length; i++) {
-        div.innerHTML +=
-        labels.push(
-            '<i style="background:' + getColor(categories[i] + 1) + '"></i> ' +
-            (categories[i] ? categories[i] : '+'));
+        var div = L.DomUtil.create("div", "info legend"),
+            labels = ["<strong>Depth</strong>"],
+            categories = ["-10-10", "10-30", "30-50", "50-70", "70-90", "90+"];
+
+        for (var i = 0; i < categories.length; i++) {
+            div.innerHTML +=
+                labels.push(
+                    '<i style="background:' + getColor(categories[i] + 1) + '"></i> ' +
+                    (categories[i] ? categories[i] : '+'));
         }
 
         div.innerHTML = labels.join('<br>');
-    return div;
-};
+        return div;
+    };
 
-// myMap.addLayer(legend);
-// legend.addTo(myMap);
+    legend.addTo(myMap);
+}
