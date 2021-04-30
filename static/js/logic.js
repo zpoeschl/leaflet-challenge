@@ -14,8 +14,7 @@ function createFeatures(earthquakeData) {
     // function to run for each feature in features array
     // give each feature a popup
     function onEachFeature(feature, layer) {
-        layer.bindPopup("<h3>" + feature.properties.place +
-            "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+        layer.bindPopup("<h3>" + feature.properties.place + "</h3><p>" + feature.properties.mag + " magnitude</p><p>" + new Date(feature.properties.time) + "</p>");
     }
 
     // create geojson layer containing features array
@@ -28,6 +27,21 @@ function createFeatures(earthquakeData) {
     createMap(earthquakes);
 }
 
+d3.json(queryUrl).then(function(response) {
+
+    var markers = L.circle();
+})
+
+
+    // var depth = feature.geometry.coordinates[2];
+
+    // L.circle([], {
+    //     color: ["green", "red"],
+    //     fillColor: ["green", "red"],
+    //     steps: 5,
+    //     radius: depth
+    // });
+
 function createMap(earthquakes) {
 
     // define map layer(s)
@@ -36,7 +50,7 @@ function createMap(earthquakes) {
         maxZoom: 18,
         id: "light-v10",
         accessToken: API_KEY
-      });
+    });
 
     // define baseMaps object to hold base layers
     var baseMaps = {
