@@ -21,10 +21,18 @@ function createFeatures(earthquakeData) {
     // run onEachFeature once for each piece of data in the array
     var earthquakes = L.geoJSON(earthquakeData, {
         pointToLayer: function(feature, latlng) {
-            return new L.CircleMarker(latlng, {
-                radius: feature.geometry.coordinates[2],
-                color: "#000000"
+            return new L.circleMarker(latlng, {
+                radius: feature.properties.mag,
+                color: "white",
+                weight: 1,
+                fill: true
             })
+        },
+        style: function(feature) {
+            return {
+                fillColor: feature.geometry.coordinates[2],
+                fillOpacity: feature.geometry.coordinates[2]
+            }
         },
         onEachFeature: onEachFeature
     });
@@ -32,15 +40,6 @@ function createFeatures(earthquakeData) {
     // send earthquakes layer to createMap function
     createMap(earthquakes);
 }
-
-    // var depth = feature.geometry.coordinates[2];
-
-    // L.circle([], {
-    //     color: ["green", "red"],
-    //     fillColor: ["green", "red"],
-    //     steps: 5,
-    //     radius: depth
-    // });
 
 function createMap(earthquakes) {
 
@@ -65,7 +64,7 @@ function createMap(earthquakes) {
     // create map + light map and earthquake layers to display on load
     var myMap = L.map("mapid", {
         center: [37.09, -95.71],
-        zoom: 5,
+        zoom: 4.5,
         layers: [lightmap, earthquakes]
     });
 
