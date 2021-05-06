@@ -76,30 +76,19 @@ function createMap(earthquakes) {
         layers: [lightmap, earthquakes]
     });
 
-    // set colors for legend
-    function getColor(d) {
-        return d === "-10-10" ? "#00FF00" : //lime green
-            d === "10-30" ? "#9acd32" : //yellow green
-                d === "30-50" ? "#FFFF00" : //yellow
-                    d === "50-70" ? "f8d568" : //orange yellow
-                        d === "70-90" ? "FFA500" : //orange
-                            d === "90+" ? "#FF0000" : //red
-                                "DC143C"; //crimson
-    }
-
     // create legend
     var legend = L.control({ position: "bottomright" });
-    legend.onAdd = function (map) {
-
+    legend.onAdd = function () {
         var div = L.DomUtil.create("div", "info legend"),
             labels = ["<strong>Depth</strong>"],
-            categories = ["-10-10", "10-30", "30-50", "50-70", "70-90", "90+"];
+            grades = [-10, 10, 30, 50, 70, 90],
+            legendColor = ["#00FF00", "9acd32", "FFFF00", "f8d568", "FFA500", "FF0000"];
 
-        for (var i = 0; i < categories.length; i++) {
+        for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
                 labels.push(
-                    '<i style="background:' + getColor(categories[i] + 1) + '"></i> ' +
-                    (categories[i] ? categories[i] : '+'));
+                    '<i style="background:' + legendColor[i] + '"></i> ' +
+                    grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+"));
         }
 
         div.innerHTML = labels.join('<br>');
