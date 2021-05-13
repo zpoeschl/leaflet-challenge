@@ -23,8 +23,8 @@ function createFeatures(earthquakeData) {
         return d < 10 ? "#00FF00" : //lime green
             d >= 10 ? "#9acd32" : //yellow green
                 d >= 30 ? "#FFFF00" : //yellow
-                    d >= 50 ? "f8d568" : //orange yellow
-                        d >= 70 ? "FFA500" : //orange
+                    d >= 50 ? "#f8d568" : //orange yellow
+                        d >= 70 ? "#FFA500" : //orange
                             d >= 90 ? "#FF0000" : //red
                                 "DC143C"; //crimson
     }
@@ -76,22 +76,30 @@ function createMap(earthquakes) {
         layers: [lightmap, earthquakes]
     });
 
+    function getColor(d) {
+        return  d < 10 ? "#00FF00" : //lime green
+                d < 30 ? "#9acd32" : //yellow green
+                d < 50 ? "#FFFF00" : //yellow
+                d < 70 ? "#f8d568" : //orange yellow
+                d < 90 ? "#FFA500" : //orange
+                d > 90 ? "#FF0000" : //red
+                            "DC143C"; //crimson
+    }
+
     // create legend
     var legend = L.control({ position: "bottomright" });
     legend.onAdd = function () {
-        var div = L.DomUtil.create("div", "info legend"),
+        var div = L.DomUtil.create("div", "legend"),
             labels = ["<strong>Depth</strong>"],
-            grades = [-10, 10, 30, 50, 70, 90],
-            legendColor = ["#00FF00", "9acd32", "FFFF00", "f8d568", "FFA500", "FF0000"];
+            grades = [-10, 10, 30, 50, 70, 90];
 
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
-                labels.push(
-                    '<i style="background:' + legendColor[i] + '"></i> ' +
+                labels.push('<i style="background:' + getColor(grades[i] + 1) + '"></i>' + 
                     grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+"));
         }
 
-        div.innerHTML = labels.join('<br>');
+        div.innerHTML = labels.join("<br>");
         return div;
     };
 
